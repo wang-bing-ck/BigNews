@@ -58,56 +58,7 @@
     <!-- /.modal -->
 
     <script src="./libs/http.js"></script>
-    <script>
-        $(function() {
-            $('.input_sub').click(function(e) {
-                e.preventDefault();
-
-
-                var username = $('.input_txt').val().trim();
-                var password = $('.input_pass').val().trim();
-
-                // console.log(username);
-                // console.log(password);
-                if (username.length == 0 || password.length == 0) {
-                    $('.modal-body>p').text('想啥呢，没有输入账号密码');
-                    $('#myModal').modal({
-                        keyboard: true
-                    });
-                    return;
-                }
-                console.log(username);
-                console.log(password);
-                $.ajax({
-                    url: BigNew.user_login,
-                    type: 'post',
-                    dataType: 'json',
-                    data: {
-                        username: username,
-                        password: password
-                    },
-                    success: function(backData) {
-                        console.log(backData);
-                        if (backData.code == 200) {
-
-                            $('.modal-body>p').text(backData.msg);
-                            $('#myModal').modal({
-                                keyboard: true
-                            })
-                            $('#myModal').on('hidden.bs.modal', function(e) {
-                                window.location.href = './index.html';
-                            })
-                        } else {
-                            $('.modal-body>p').text(backData.msg);
-                            $('#myModal').modal({
-                                keyboard: true
-                            })
-                        }
-                    }
-                });
-            })
-        })
-    </script>
+    <script src="./js/login.js"></script>
 </body>
 
 </html>
