@@ -54,5 +54,20 @@
 
         </div>
     </div>
+
+    <script src="./libs/http.js"></script>
+    <script>
+        $(function() {
+            $.ajax({
+                url: BigNew.user_info,
+                type: 'get',
+                dataType: 'json',
+                success: function(backData) {
+                    console.log(backData);
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
