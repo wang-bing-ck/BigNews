@@ -27,11 +27,9 @@ $(function() {
     //1.给file表单元素注册onchange事件
     $('#exampleInputFile').change(function() {
         //1.2 获取用户选择的图片
-        var file = this.files[0];
         //1.3 将文件转为src路径
-        var url = URL.createObjectURL(file);
         //1.4 将url路径赋值给img标签的src
-        $('.user_pic').attr('src', url);
+        $('.user_pic').attr('src', URL.createObjectURL(this.files[0]));
     });
 
 
