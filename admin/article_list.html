@@ -72,6 +72,89 @@
             </div>
         </div>
     </div>
+
+
+    <script src="./libs/http.js"></script>
+
+    <script id="list_List" type="text/html">
+        <option value="">所有分类</option>
+        {{ each data v }}
+        <option value="{{ v.id }}">{{ v.name }}</option>
+        {{ /each }}
+    </script>
+
+    <script id="query_List" type="text/html">
+        {{ each data.data v }}
+        <tr>
+            <td>{{ v.title }}</td>
+            <td>{{ v.author }}</td>
+            <td>{{ v.category }}</td>
+            <td class="text-center">{{ v.date }}</td>
+            <td class="text-center">{{ v.state }}</td>
+            <td class="text-center">
+                <a href="article_edit.html" class="btn btn-default btn-xs btn-compile" data-id="{{ v.id }}">编辑</a>
+                <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-delete" data-id="{{ v.id }}">删除</a>
+            </td>
+        </tr>
+        {{ /each }}
+    </script>
+    <script>
+        $(function() {
+
+            // 获取所有类别
+            $.ajax({
+                url: BigNew.category_list,
+                type: 'get',
+                dataType: 'json',
+                success: function(backData) {
+                    // 渲染页面
+                    $('#selCategory').html(template('list_List', backData))
+                }
+            });
+
+
+            // 请求文章
+            // $.ajax({
+            //     url: BigNew.article_query,
+            //     type: 'get',
+            //     dataType: 'json',
+            //     data: {
+            //         type: $('#selCategory').val(),
+            //         state: $('#selStatus').val(),
+            //         page: '',
+            //         perpage: 10
+            //     },
+            //     success: function(backData) {
+            //         console.log(backData);
+            //         $('table>tbody').html(template('query_List', backData))
+            //     }
+            // });
+
+
+            // 点击筛选按钮、
+            $('#btnSearch').click(function(e) {
+                e.preventDefault();
+                console.log($('#selCategory').val());
+                $.ajax({
+                    url: BigNew.article_query,
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        type: $('#selCategory').val(),
+                        state: $('#selStatus').val(),
+                        page: '',
+                        perpage: 10
+                    },
+                    success: function(backData) {
+                        console.log(backData);
+                        $('table>tbody').html(template('query_List', backData))
+                    }
+                });
+            })
+
+            $('#btnSearch').click();
+        })
+    </script>
 </body>
 
 </html>

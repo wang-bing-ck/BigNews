@@ -22,7 +22,7 @@ $(function() {
             // 获取他父亲哥哥的文本
             $('#message-text').val($(e.relatedTarget).parent().prev().text());
             // 取出id值，赋值给确认按钮
-            $('.modal-confirm').attr('data-id', $(e.relatedTarget)[0].getAttribute('data-id'));
+            $('.modal-confirm').attr('data-id', $(e.relatedTarget).attr('data-id'));
 
         }
     })
@@ -43,8 +43,9 @@ $(function() {
                 type: 'post',
                 dataType: 'json',
                 data: {
-                    name: $('#recipient-name').val(),
-                    slug: $('#message-text').val()
+                    // 优化去空格
+                    name: $('#recipient-name').val().trim(),
+                    slug: $('#message-text').val().trim()
                 },
                 success: function(backData) {
                     console.log(backData);
@@ -63,8 +64,9 @@ $(function() {
                 type: 'post',
                 dataType: 'json',
                 data: {
-                    name: $('#recipient-name').val(),
-                    slug: $('#message-text').val(),
+                    // 优化去空格
+                    name: $('#recipient-name').val().trim(),
+                    slug: $('#message-text').val().trim(),
                     id: $('.modal-confirm').attr('data-id')
                 },
                 success: function(backData) {
@@ -83,24 +85,28 @@ $(function() {
 
     // 删除分类
     $('table>tbody').on('click', '.btn-delete', function() {
+
         $(this).attr('data-id')
-        console.log($(this).attr('data-id'));
+
         // $(this).parents('tr').remove();
 
-        $.ajax({
-            url: BigNew.category_delete,
-            type: 'post',
-            dataType: 'json',
-            data: {
-                id: $(this).attr('data-id')
-            },
-            success: function(backData) {
-                if (confirm('是否删除')) {
+        // 优化删除确定框
+        if (confirm('是否删除')) {
+            $.ajax({
+                url: BigNew.category_delete,
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    id: $(this).attr('data-id')
+                },
+                success: function(backData) {
+
                     alert('删除成功');
                     window.location.reload();
+                    // backData.code == 204
                 }
-                // backData.code == 204
-            }
-        });
+            });
+        }
+
     });
 });
