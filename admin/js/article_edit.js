@@ -13,7 +13,7 @@ $(function() {
 
     // 获取编辑信息
     $.ajax({
-        url: BigNew.category_search,
+        url: BigNew.article_search,
         type: 'get',
         dataType: 'json',
         data: {
@@ -55,7 +55,7 @@ $(function() {
         //创建FormData对象：参数是表单dom对象
         // 只会取出表单中有name得属性
         var fd = new FormData($('form')[0]);
-
+        // console.log(fd)
         // 获取不到的需要手动添加
         fd.append('id', window.location.href.split('=')[1]);
         fd.append('date', $('#testico').val());
@@ -71,6 +71,7 @@ $(function() {
             contentType: false,
             processData: false,
             success: function(backData) {
+                // console.log(backData)
                 if (backData.code == 200) {
                     alert(backData.msg);
                     // 修改后跳转回列表页
