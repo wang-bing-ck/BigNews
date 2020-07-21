@@ -47,6 +47,8 @@ $(function() {
 
     // 删除、批准、拒绝
     $('table>tbody').on('click', '.btn-danger,.btn-warning,.btn-info', function() {
+        var website = null;
+
         if ($(this).hasClass('btn-warning')) {
             website = BigNew.comment_pass;
         } else if ($(this).hasClass('btn-info')) {
@@ -54,6 +56,8 @@ $(function() {
         } else if ($(this).hasClass('btn-danger')) {
             website = BigNew.comment_delete;
         }
+
+        // website = $(this).hasClass('btn-warning') ? BigNew.comment_pass : ($(this).hasClass('btn-info') ? BigNew.comment_reject : BigNew.comment_delete)
 
         $.ajax({
             url: website,

@@ -137,11 +137,11 @@
 
             <div id="pagination" class="page"></div>
             <script>
-                $(function () {
+                $(function() {
                     $("#pagination").pagination({
                         currentPage: 2,
                         totalPage: 8,
-                        callback: function (current) {
+                        callback: function(current) {
                             alert('ok!');
                         }
                     });
@@ -152,7 +152,7 @@
         <div class="right_con setfl">
             <div class="common_wrap">
                 <h3><i class="fa fa-bar-chart"></i> 一周热门排行</h3>
-                <ul class="content_list">
+                <ul class="content_list hotrank_list">
                     <li><span class="first">1</span><a href="#">神奇的水滴摄影，泡泡中的世界泡泡中的世界</a></li>
                     <li><span class="second">2</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
                     <li><span class="third">3</span><a href="#">神奇的水滴摄影，泡泡中的世界</a></li>
@@ -227,6 +227,102 @@
     </div>
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
+
+    <script src="./js/home-http.js"></script>
+
+
+    <!-- 文章列表 -->
+    <script id="index-search" type="text/html">
+        <div class="list_title">
+            <h3>科 技</h3>
+        </div>
+        {{ each data.data v }}
+        <div class="common_news_list">
+            <a href="./article.html?id={{ v.id }}" class="list_pic"><img src="{{ v.cover }}" alt=""></a>
+            <h4><a href="./article.html?id={{ v.id }}">{{ v.title }}</a></h4>
+            <p>{{@ v.intro }}
+            </p>
+            <div class="new_info">
+                <span>标签：{{ v.category }}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{ v.read }}
+                    )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{ v.comments }} )</span>
+                <b>发布于 {{ v.date }}</b>
+            </div>
+        </div>
+        {{ /each }}
+    </script>
+
+    <!-- 请求文章类别 -->
+    <script id="index-category" type="text/html">
+        <li class="up"></li>
+        {{ each data v }}
+        <li><a href="./list.html">{{ v.name }}</a></li>
+        {{ /each }}
+    </script>
+
+    <!-- 热门排行 -->
+    <script id="index-rank" type="text/html">
+
+        {{ each data v }}
+        <li>
+            {{ if $index==0 }}
+            <span class="first">
+            {{ else if $index==1}}
+            <span class="second">
+            {{ else if $index==2}}
+            <span class="third">
+            {{ else }}
+            <span>
+             {{ /if }}   {{ $index+1 }}</span><a href="./article.html?id={{ v.id }}">{{ v.title }}</a></li>
+        {{ /each }}
+    </script>
+
+
+    <!-- 最新评论 -->
+    <script id="latest-comment" type="text/html">
+        {{ each data v }}
+        <li>
+            <span>{{ v.author[0] }}</span>
+            <b><em>{{ v.author }}</em> {{ v.date }}说:</b>
+            <strong>{{ v.intro }}</strong>
+        </li>
+        {{ /each }}
+    </script>
+
+
+    <!-- 焦点关注 -->
+    <script id="index-attention" type="text/html">
+        {{ each data v }}
+        <li><a href="#">{{ v.intro }}</a></li>
+        {{ /each }}
+    </script>
+
+    <script src="./js/tem-equal.js"></script>
+
+    <script>
+        $(function() {
+
+            // 点击搜索，加载列表
+            $('.search_btn').click(function() {
+                $.ajax({
+                    url: BigNew.index_search,
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        key: $('.search_txt').val().trim(),
+                        page: 1,
+                        perpage: 6
+                    },
+                    success: function(backData) {
+                        console.log(backData)
+                        $('.setfr').html(template('index-search', backData))
+                    }
+                });
+            })
+
+            // 刚加载页面，渲染列表
+            $('.search_btn').click();
+        })
+    </script>
 </body>
 
 </html>
